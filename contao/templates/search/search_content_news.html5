@@ -1,0 +1,22 @@
+<?php
+if (!$this->data->addImage) {
+    return;
+}
+
+$file = FilesModel::findByUuid($this->data->singleSRC);
+
+if (!file_exists(TL_ROOT . '/' . $file->path)) {
+    return;
+}
+
+$picture = Picture::create($file->path, deserialize($this->module->imgSize));
+?>
+
+<figure class="thumbnail">
+    <?php if ($this->href): ?>
+        <a href="<?php echo $this->href; ?>"<?php echo $this->attributes; ?>
+           title="<?php echo $this->alt; ?>"><?php $this->insert('picture_default', $picture->getTemplateData()); ?></a>
+    <?php else: ?>
+        <?php $this->insert('picture_default', $picture->getTemplateData()); ?>
+    <?php endif; ?>
+</figure>
